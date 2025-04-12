@@ -1,3 +1,4 @@
+const container = document.querySelector(".game-container");
 const plane = document.getElementById('plane');
 
 const LEFT_INPUT = document.querySelector(".l-input");
@@ -22,7 +23,23 @@ const RIGTH_ONEHUNDRED_BUTTON = document.getElementById("r-one-hundred");
 
 
 const airplane = () => {
-    
+  let x = 0;
+  let y = 0;
+  const containerWidth = container.offsetWidth;
+  const planeWidth = plane.offsetWidth;
+
+  const max = containerWidth - planeWidth;
+
+  let interval = setInterval(() => {
+    if (x >= max) {
+      clearInterval(interval);
+      return;
+    }
+    x += 5;
+    y -= 1.2;
+
+    plane.style.transform = `translate(${x}px, ${y}px)`;
+  }, 16);
 };
 
 
