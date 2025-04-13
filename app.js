@@ -1,5 +1,7 @@
 const container = document.querySelector(".game-container");
 const plane = document.getElementById('plane');
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
 
 const LEFT_INPUT = document.querySelector(".l-input");
 const LEFT_PLUS_BUTTON = document.getElementById("l-plus");
@@ -29,6 +31,9 @@ const airplane = () => {
   const planeWidth = plane.offsetWidth;
 
   const max = containerWidth - planeWidth;
+
+  canvas.width = container.offsetWidth;
+  canvas.height = container.offsetHeight;
 
   let interval = setInterval(() => {
     if (x >= max) {
