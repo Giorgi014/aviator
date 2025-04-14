@@ -7,6 +7,11 @@ body {
   display: flex;
   overflow: hidden;
 }
+canvas{
+  position: absolute;
+  top: 0;
+  left: 0;
+}
 button {
   cursor: pointer;
   border: none;
