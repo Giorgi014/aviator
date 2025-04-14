@@ -41,6 +41,16 @@ header .head .balance-and-settings {
   align-items: center;
   gap: 40px;
 }
+header .head .balance-and-settings button{
+  background: none;
+  color: white;
+  padding: 5px;
+  font-size: 16px;
+  font-weight: 200;
+}
+header .head .balance-and-settings #min-screen{
+  display: none;
+}
 header .head .balance-and-settings .balance {
   display: flex;
   justify-content: center;
@@ -99,6 +109,17 @@ main .game-container {
   position: relative;
   width: 100%;
   height: 100vh;
+}
+main .game-container #progresive-number{
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%);
+}
+main .game-container #progresive-number p{
+  color: white;
+  font-size: 50px;
+  font-weight: bold;
 }
 main .game-container #plane {
   bottom: 200px;

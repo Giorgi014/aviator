@@ -1,3 +1,7 @@
+const GET_FULL_SCREEN = document.documentElement;
+const FULL_SCREEN = document.getElementById("full-screen");
+const MINIMIZE_SCREEN = document.getElementById("min-screen");
+
 const container = document.querySelector(".game-container");
 const plane = document.getElementById("plane");
 const canvas = document.getElementById("canvas");
@@ -22,6 +26,20 @@ const RIGTH_ONE_BUTTON = document.getElementById("r-one");
 const RIGTH_FIVE_BUTTON = document.getElementById("r-five");
 const RIGTH_TWENTYFIVE_BUTTON = document.getElementById("r-twenty-five");
 const RIGTH_ONEHUNDRED_BUTTON = document.getElementById("r-one-hundred");
+
+
+
+const getFullScreen = () => {
+  FULL_SCREEN.addEventListener('click', () => {
+    if (GET_FULL_SCREEN.msRequestFullScreen) {
+      GET_FULL_SCREEN.msRequestFullScreen();
+    }else if (GET_FULL_SCREEN.mozRequestFullScreen) {
+      GET_FULL_SCREEN.mozRequestFullScreen();
+    }else if (GET_FULL_SCREEN.webkitRequestFullScreen) {
+      GET_FULL_SCREEN.webkitRequestFullScreen();
+    }
+  })
+}
 
 const airplane = () => {
   let x = 0;
@@ -186,6 +204,7 @@ const betValue = () => {
   });
 };
 
+getFullScreen();
 airplane();
 betBtn();
 betValue();

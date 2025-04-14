@@ -25,8 +25,11 @@
             <div class="balance-text">GEL</div>
           </div>
           <div class="controls">
-            <button class="full-screen">
+            <button id="full-screen">
               <i class="fa-solid fa-maximize"></i>
+            </button>
+            <button id="min-screen">
+              <i class="fa-solid fa-minimize"></i>
             </button>
             <button class="settings">
               <i class="fa-solid fa-bars"></i>
@@ -45,6 +48,9 @@
     </header>
     <main>
       <article class="game-container">
+        <div id="progresive-number">
+          <p>1.00x</p>
+        </div>
         <div id="plane">
           <img src="./img/aviator-airplane.png" alt="aviator airplane" />
         </div>
@@ -55,7 +61,7 @@
           <div class="bet">
             <div class="bet-multiplier">
               <button id="l-minus">-</button>
-              <input type="text" value="1.00" class="l-input">
+              <input type="text" value="1.00" class="l-input" />
               <button id="l-plus">+</button>
             </div>
             <div class="bet-value">
@@ -71,7 +77,7 @@
           <div class="bet">
             <div class="bet-multiplier">
               <button id="r-minus">-</button>
-              <input type="text" value="1.00" class="r-input">
+              <input type="text" value="1.00" class="r-input" />
               <button id="r-plus">+</button>
             </div>
             <div class="bet-value">
