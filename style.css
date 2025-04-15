@@ -105,6 +105,17 @@ main {
   width: 100%;
   height: 100vh;
 }
+main #error-message{
+  position: absolute;
+  /* color: red;  */
+  background-color: red;
+  width: 100px;
+  height: 100px;
+  top: 5%;
+  left: 50%;
+  transform: translate(-50%);
+  font-size: 20px;
+}
 main .game-container {
   position: relative;
   width: 100%;
