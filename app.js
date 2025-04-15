@@ -189,83 +189,55 @@ const betBtn = () => {
   });
 };
 
+
+const singleLeftButtons = (v) => {
+  let currentValue = parseFloat(LEFT_INPUT.value) || 0;
+    let addedValue = v;
+    if (currentValue < 500) {
+      let newValue = currentValue + addedValue;
+      LEFT_INPUT.value = newValue.toFixed(2);
+      LEFT_BET_BUTTON.textContent = `${newValue.toFixed(2)} BET`;
+    }
+}
+const singleRightButtons = (v) => {
+  let currentValue = parseFloat(RIGTH_INPUT.value) || 0;
+    let addedValue = v;
+    if (currentValue < 500) {
+      let newValue = currentValue + addedValue;
+      RIGTH_INPUT.value = newValue.toFixed(2);
+      RIGTH_BET_BUTTON.textContent = `${newValue.toFixed(2)} BET`;
+    }
+}
+
 const betValue = () => {
   // LEFT SIDE BUTTONS
 
   LEFT_ONE_BUTTON.addEventListener("click", () => {
-    let currentValue = parseFloat(LEFT_INPUT.value) || 0;
-    let addedValue = 1.0;
-    if (currentValue < 500) {
-      let newValue = currentValue + addedValue;
-      LEFT_INPUT.value = newValue.toFixed(2);
-      LEFT_BET_BUTTON.textContent = `${newValue.toFixed(2)} BET`;
-    }
+    singleLeftButtons(1.00)
   });
   LEFT_FIVE_BUTTON.addEventListener("click", () => {
-    let currentValue = parseFloat(LEFT_INPUT.value) || 0;
-    let addedValue = 5.0;
-    if (currentValue < 500) {
-      let newValue = currentValue + addedValue;
-      LEFT_INPUT.value = newValue.toFixed(2);
-      LEFT_BET_BUTTON.textContent = `${newValue.toFixed(2)} BET`;
-    }
+    singleLeftButtons(5.00)
   });
   LEFT_TWENTYFIVE_BUTTON.addEventListener("click", () => {
-    let currentValue = parseFloat(LEFT_INPUT.value) || 0;
-    let addedValue = 25.0;
-    if (currentValue < 500) {
-      let newValue = currentValue + addedValue;
-      LEFT_INPUT.value = newValue.toFixed(2);
-      LEFT_BET_BUTTON.textContent = `${newValue.toFixed(2)} BET`;
-    }
+    singleLeftButtons(25.00)
   });
   LEFT_ONEHUNDRED_BUTTON.addEventListener("click", () => {
-    let currentValue = parseFloat(LEFT_INPUT.value) || 0;
-    let addedValue = 100.0;
-    if (currentValue < 500) {
-      let newValue = currentValue + addedValue;
-      LEFT_INPUT.value = newValue.toFixed(2);
-      LEFT_BET_BUTTON.textContent = `${newValue.toFixed(2)} BET`;
-    }
+    singleLeftButtons(100.00)
   });
 
   // RIGHT SIDE BUTTONS
 
   RIGTH_ONE_BUTTON.addEventListener("click", () => {
-    let currentValue = parseFloat(RIGTH_INPUT.value) || 0;
-    let addedValue = 1.0;
-    if (currentValue < 500) {
-      let newValue = currentValue + addedValue;
-      RIGTH_INPUT.value = newValue.toFixed(2);
-      RIGTH_BET_BUTTON.textContent = `${newValue.toFixed(2)} BET`;
-    }
+    singleRightButtons(1.00)
   });
   RIGTH_FIVE_BUTTON.addEventListener("click", () => {
-    let currentValue = parseFloat(RIGTH_INPUT.value) || 0;
-    let addedValue = 5.00;
-    if (currentValue < 500) {
-      let newValue = currentValue + addedValue;
-      RIGTH_INPUT.value = newValue.toFixed(2);
-      RIGTH_BET_BUTTON.textContent = `${newValue.toFixed(2)} BET`;
-    }
+    singleRightButtons(5.00)
   });
   RIGTH_TWENTYFIVE_BUTTON.addEventListener("click", () => {
-    let currentValue = parseFloat(RIGTH_INPUT.value) || 0;
-    let addedValue = 25.00;
-    if (currentValue < 500) {
-      let newValue = currentValue + addedValue;
-      RIGTH_INPUT.value = newValue.toFixed(2);
-      RIGTH_BET_BUTTON.textContent = `${newValue.toFixed(2)} BET`;
-    }
+    singleRightButtons(25.00)
   });
   RIGTH_ONEHUNDRED_BUTTON.addEventListener("click", () => {
-    let currentValue = parseFloat(RIGTH_INPUT.value) || 0;
-    let addedValue = 100.00;
-    if (currentValue < 500) {
-      let newValue = currentValue + addedValue;
-      RIGTH_INPUT.value = newValue.toFixed(2);
-      RIGTH_BET_BUTTON.textContent = `${newValue.toFixed(2)} BET`;
-    }
+    singleRightButtons(100.00)
   });
 };
 
