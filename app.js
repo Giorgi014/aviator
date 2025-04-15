@@ -1,3 +1,5 @@
+const balance = document.querySelector('.balance-value');
+
 const GET_FULL_SCREEN = document.documentElement;
 const FULL_SCREEN = document.getElementById("full-screen");
 const MINIMIZE_SCREEN = document.getElementById("min-screen");
@@ -27,6 +29,39 @@ const RIGTH_FIVE_BUTTON = document.getElementById("r-five");
 const RIGTH_TWENTYFIVE_BUTTON = document.getElementById("r-twenty-five");
 const RIGTH_ONEHUNDRED_BUTTON = document.getElementById("r-one-hundred");
 
+let index = 1.00;
+let walletBalance = 1000.00;
+
+const userBalance = () => {
+  balance.textContent = walletBalance.toFixed(2);
+};
+
+
+// const indexNumber = () =>{
+//   if (index >= 0 && index < 5) {
+//     index += 0.02; 
+//     index = parseFloat(index.toFixed(2));
+//     document.querySelector('.index').innerHTML = index + "x";
+//   }else if(index >= 5 && index < 20){
+//     index += 0.12; 
+//     index = parseFloat(index.toFixed(2));
+//     document.querySelector('.index').innerHTML = index + "x";
+//   }
+//   else if(index >= 20 && index < 50){
+//     index += 1.12; 
+//     index = parseFloat(index.toFixed(2));
+//     document.querySelector('.index').innerHTML = index + "x";
+//   }else if(index >= 50 && index < 100){
+//     index += 2.16; 
+//     index = parseFloat(index.toFixed(2));
+//     document.querySelector('.index').innerHTML = index + "x";
+//   }else if(index >= 100){
+//     index += 3.16; 
+//     index = parseFloat(index.toFixed(2));
+//     document.querySelector('.index').innerHTML = index + "x";
+//   }
+// }
+// setInterval(indexNumber, 100);
 
 
 const getFullScreen = () => {
@@ -53,35 +88,65 @@ const airplane = () => {
   canvas.height = container.offsetHeight;
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+  let animationId;
+  let reachedEnd = false;
+  let waveAngle = 0;
+  let baseY = 0;
+  const animate = () => {
 
-  // ctx.strokeStyle = "red";
-  // ctx.lineWidth = 2;
-  // ctx.beginPath();
+    if (!reachedEnd) {
+      x += 5;
+      y -= 1.2;
 
-  // let startX = x + planeWidth / 2.2;
-  // let startY = y + canvas.height / 1.3;
-  // ctx.moveTo(startX, startY);
-
-  let interval = setInterval(() => {
-    if (x >= max) {
-      clearInterval(interval);
-      return;
+      if (x >= max) {
+        x = max;
+        reachedEnd = true;
+        baseY = y;
+      }
+    } else {
+      waveAngle += 0.005;
+      y = baseY + Math.sin(waveAngle) * 70;
     }
-    x += 5;
-    y -= 1.2;
 
     plane.style.transform = `translate(${x}px, ${y}px)`;
 
     ctx.fillStyle = "red";
     ctx.beginPath();
-    ctx.arc(x + planeWidth / 2.2, y + canvas.height / 1.3, 2, 0, Math.PI * 2);
+    ctx.arc(x + planeWidth / 6, y + canvas.height / 1.34, 2, 0, Math.PI * 2);
     ctx.fill();
-    // const newX = x + planeWidth / 2.2;
-    // const newY = y + canvas.height / 1.3;
 
-    // ctx.lineTo(newX, newY);
-    // ctx.stroke();
-  }, 16);
+    animationId = requestAnimationFrame(animate);
+  };
+
+  animate(); 
+  // // ctx.strokeStyle = "red";
+  // // ctx.lineWidth = 2;
+  // // ctx.beginPath();
+
+  // // let startX = x + planeWidth / 2.2;
+  // // let startY = y + canvas.height / 1.3;
+  // // ctx.moveTo(startX, startY);
+
+  // let interval = setInterval(() => {
+  //   if (x >= max) {
+  //     clearInterval(interval);
+  //     return;
+  //   }
+  //   x += 5;
+  //   y -= 1.2;
+
+  //   plane.style.transform = `translate(${x}px, ${y}px)`;
+
+  //   ctx.fillStyle = "red";
+  //   ctx.beginPath();
+  //   ctx.arc(x + planeWidth / 2.2, y + canvas.height / 1.3, 2, 0, Math.PI * 2);
+  //   ctx.fill();
+  //   // const newX = x + planeWidth / 2.2;
+  //   // const newY = y + canvas.height / 1.3;
+
+  //   // ctx.lineTo(newX, newY);
+  //   // ctx.stroke();
+  // }, 16);
 };
 
 const betBtn = () => {
@@ -204,7 +269,28 @@ const betValue = () => {
   });
 };
 
+const betButton = () =>{
+  LEFT_BET_BUTTON.addEventListener("click", () => {
+    let betAmount = parseFloat(LEFT_INPUT.value) || 0;
+    if (betAmount > 0 && walletBalance >= betAmount) {
+      walletBalance -= betAmount;
+      userBalance();
+    }
+  });
+  RIGTH_BET_BUTTON.addEventListener("click", () => {
+    let betAmount = parseFloat(RIGTH_INPUT.value) || 0;
+    if (betAmount > 0 && walletBalance >= betAmount) {
+      walletBalance -= betAmount;
+      userBalance();
+    }
+  });
+}
+
+
+userBalance();
+// indexNumber();
 getFullScreen();
 airplane();
 betBtn();
 betValue();
+betButton();
