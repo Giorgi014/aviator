@@ -1,4 +1,5 @@
-const balance = document.querySelector('.balance-value');
+const balance = document.querySelector(".balance-value");
+const INSUFFICIENT_BALANCE = document.getElementById("error-message");
 
 const GET_FULL_SCREEN = document.documentElement;
 const FULL_SCREEN = document.getElementById("full-screen");
@@ -29,52 +30,50 @@ const RIGTH_FIVE_BUTTON = document.getElementById("r-five");
 const RIGTH_TWENTYFIVE_BUTTON = document.getElementById("r-twenty-five");
 const RIGTH_ONEHUNDRED_BUTTON = document.getElementById("r-one-hundred");
 
-let index = 1.00;
-let walletBalance = 1000.00;
+let index = 1.0;
+let walletBalance = 1000.0;
 
 const userBalance = () => {
   balance.textContent = walletBalance.toFixed(2);
 };
 
-
 // const indexNumber = () =>{
 //   if (index >= 0 && index < 5) {
-//     index += 0.02; 
+//     index += 0.02;
 //     index = parseFloat(index.toFixed(2));
 //     document.querySelector('.index').innerHTML = index + "x";
 //   }else if(index >= 5 && index < 20){
-//     index += 0.12; 
+//     index += 0.12;
 //     index = parseFloat(index.toFixed(2));
 //     document.querySelector('.index').innerHTML = index + "x";
 //   }
 //   else if(index >= 20 && index < 50){
-//     index += 1.12; 
+//     index += 1.12;
 //     index = parseFloat(index.toFixed(2));
 //     document.querySelector('.index').innerHTML = index + "x";
 //   }else if(index >= 50 && index < 100){
-//     index += 2.16; 
+//     index += 2.16;
 //     index = parseFloat(index.toFixed(2));
 //     document.querySelector('.index').innerHTML = index + "x";
 //   }else if(index >= 100){
-//     index += 3.16; 
+//     index += 3.16;
 //     index = parseFloat(index.toFixed(2));
 //     document.querySelector('.index').innerHTML = index + "x";
 //   }
 // }
 // setInterval(indexNumber, 100);
 
-
 const getFullScreen = () => {
-  FULL_SCREEN.addEventListener('click', () => {
+  FULL_SCREEN.addEventListener("click", () => {
     if (GET_FULL_SCREEN.msRequestFullScreen) {
       GET_FULL_SCREEN.msRequestFullScreen();
-    }else if (GET_FULL_SCREEN.mozRequestFullScreen) {
+    } else if (GET_FULL_SCREEN.mozRequestFullScreen) {
       GET_FULL_SCREEN.mozRequestFullScreen();
-    }else if (GET_FULL_SCREEN.webkitRequestFullScreen) {
+    } else if (GET_FULL_SCREEN.webkitRequestFullScreen) {
       GET_FULL_SCREEN.webkitRequestFullScreen();
     }
-  })
-}
+  });
+};
 
 const airplane = () => {
   let x = 0;
@@ -93,7 +92,6 @@ const airplane = () => {
   let waveAngle = 0;
   let baseY = 0;
   const animate = () => {
-
     if (!reachedEnd) {
       x += 5;
       y -= 1.2;
@@ -118,7 +116,7 @@ const airplane = () => {
     animationId = requestAnimationFrame(animate);
   };
 
-  animate(); 
+  animate();
   // // ctx.strokeStyle = "red";
   // // ctx.lineWidth = 2;
   // // ctx.beginPath();
@@ -189,61 +187,66 @@ const betBtn = () => {
   });
 };
 
-
 const singleLeftButtons = (v) => {
   let currentValue = parseFloat(LEFT_INPUT.value) || 0;
-    let addedValue = v;
-    if (currentValue < 500) {
-      let newValue = currentValue + addedValue;
-      LEFT_INPUT.value = newValue.toFixed(2);
-      LEFT_BET_BUTTON.textContent = `${newValue.toFixed(2)} BET`;
-    }
-}
+  let addedValue = v;
+  if (currentValue < 500) {
+    let newValue = currentValue + addedValue;
+    LEFT_INPUT.value = newValue.toFixed(2);
+    LEFT_BET_BUTTON.textContent = `${newValue.toFixed(2)} BET`;
+  }
+};
 const singleRightButtons = (v) => {
   let currentValue = parseFloat(RIGTH_INPUT.value) || 0;
-    let addedValue = v;
-    if (currentValue < 500) {
-      let newValue = currentValue + addedValue;
-      RIGTH_INPUT.value = newValue.toFixed(2);
-      RIGTH_BET_BUTTON.textContent = `${newValue.toFixed(2)} BET`;
-    }
-}
+  let addedValue = v;
+  if (currentValue < 500) {
+    let newValue = currentValue + addedValue;
+    RIGTH_INPUT.value = newValue.toFixed(2);
+    RIGTH_BET_BUTTON.textContent = `${newValue.toFixed(2)} BET`;
+  }
+};
 
 const betValue = () => {
   // LEFT SIDE BUTTONS
 
   LEFT_ONE_BUTTON.addEventListener("click", () => {
-    singleLeftButtons(1.00)
+    singleLeftButtons(1.0);
   });
   LEFT_FIVE_BUTTON.addEventListener("click", () => {
-    singleLeftButtons(5.00)
+    singleLeftButtons(5.0);
   });
   LEFT_TWENTYFIVE_BUTTON.addEventListener("click", () => {
-    singleLeftButtons(25.00)
+    singleLeftButtons(25.0);
   });
   LEFT_ONEHUNDRED_BUTTON.addEventListener("click", () => {
-    singleLeftButtons(100.00)
+    singleLeftButtons(100.0);
   });
 
   // RIGHT SIDE BUTTONS
 
   RIGTH_ONE_BUTTON.addEventListener("click", () => {
-    singleRightButtons(1.00)
+    singleRightButtons(1.0);
   });
   RIGTH_FIVE_BUTTON.addEventListener("click", () => {
-    singleRightButtons(5.00)
+    singleRightButtons(5.0);
   });
   RIGTH_TWENTYFIVE_BUTTON.addEventListener("click", () => {
-    singleRightButtons(25.00)
+    singleRightButtons(25.0);
   });
   RIGTH_ONEHUNDRED_BUTTON.addEventListener("click", () => {
-    singleRightButtons(100.00)
+    singleRightButtons(100.0);
   });
 };
-
-const betButton = () =>{
+const betButton = () => {
   LEFT_BET_BUTTON.addEventListener("click", () => {
     let betAmount = parseFloat(LEFT_INPUT.value) || 0;
+    
+    if (betAmount > walletBalance) {
+      INSUFFICIENT_BALANCE.style.display = "flex";
+      setTimeout(() => {
+        INSUFFICIENT_BALANCE.style.display = "none";
+      }, 3000);
+    }
     if (betAmount > 0 && walletBalance >= betAmount) {
       walletBalance -= betAmount;
       userBalance();
@@ -251,13 +254,19 @@ const betButton = () =>{
   });
   RIGTH_BET_BUTTON.addEventListener("click", () => {
     let betAmount = parseFloat(RIGTH_INPUT.value) || 0;
+  
+    if (betAmount > walletBalance) {
+      INSUFFICIENT_BALANCE.style.display = "block";
+      setTimeout(() => {
+        INSUFFICIENT_BALANCE.style.display = "none";
+      }, 3000);
+    }
     if (betAmount > 0 && walletBalance >= betAmount) {
       walletBalance -= betAmount;
       userBalance();
     }
   });
-}
-
+};
 
 userBalance();
 // indexNumber();

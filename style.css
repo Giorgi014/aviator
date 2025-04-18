@@ -107,14 +107,18 @@ main {
 }
 main #error-message{
   position: absolute;
-  /* color: red;  */
-  background-color: red;
-  width: 100px;
-  height: 100px;
-  top: 5%;
-  left: 50%;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  color: white; 
+  background-color: red; 
+  width: 150px;
+  height: 30px;
+  border-radius: 2px;
+  top: 10%;
+  right: 10%;
   transform: translate(-50%);
-  font-size: 20px;
+  font-size: 16px;
 }
 main .game-container {
   position: relative;
