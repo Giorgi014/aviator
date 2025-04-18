@@ -64,14 +64,42 @@ const userBalance = () => {
 // setInterval(indexNumber, 100);
 
 const getFullScreen = () => {
-  FULL_SCREEN.addEventListener("click", () => {
-    if (GET_FULL_SCREEN.msRequestFullScreen) {
-      GET_FULL_SCREEN.msRequestFullScreen();
+  const enterFullScreen = () => {
+    if (GET_FULL_SCREEN.requestFullscreen) {
+      GET_FULL_SCREEN.requestFullscreen();
+    } else if (GET_FULL_SCREEN.webkitRequestFullscreen) {
+      GET_FULL_SCREEN.webkitRequestFullscreen();
     } else if (GET_FULL_SCREEN.mozRequestFullScreen) {
       GET_FULL_SCREEN.mozRequestFullScreen();
-    } else if (GET_FULL_SCREEN.webkitRequestFullScreen) {
-      GET_FULL_SCREEN.webkitRequestFullScreen();
+    } else if (GET_FULL_SCREEN.msRequestFullscreen) {
+      GET_FULL_SCREEN.msRequestFullscreen();
     }
+  };
+
+  const exitFullScreen = () => {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (document.webkitExitFullscreen) {
+      document.webkitExitFullscreen();
+    } else if (document.mozCancelFullScreen) {
+      document.mozCancelFullScreen();
+    } else if (document.msExitFullscreen) {
+      document.msExitFullscreen();
+    }
+  };
+
+  FULL_SCREEN.addEventListener("click", () => {
+    enterFullScreen();
+  });
+
+  MINIMIZE_SCREEN.addEventListener("click", () => {
+    exitFullScreen();
+  });
+
+  document.addEventListener("fullscreenchange", () => {
+    const isFullscreen = !!document.fullscreenElement;
+    FULL_SCREEN.style.display = isFullscreen ? "none" : "block";
+    MINIMIZE_SCREEN.style.display = isFullscreen ? "block" : "none";
   });
 };
 
@@ -240,7 +268,16 @@ const betValue = () => {
 const betButton = () => {
   LEFT_BET_BUTTON.addEventListener("click", () => {
     let betAmount = parseFloat(LEFT_INPUT.value) || 0;
-    
+
+    if (LEFT_BET_BUTTON.textContent === "CANCEL") {
+      LEFT_BET_BUTTON.textContent = `${betAmount.toFixed(2)} BET`;
+      LEFT_BET_BUTTON.style.backgroundColor = "";
+      LEFT_BET_BUTTON.style.color = "";
+      walletBalance += betAmount;
+      userBalance();
+      return;
+    }
+
     if (betAmount > walletBalance) {
       INSUFFICIENT_BALANCE.style.display = "flex";
       setTimeout(() => {
@@ -250,11 +287,24 @@ const betButton = () => {
     if (betAmount > 0 && walletBalance >= betAmount) {
       walletBalance -= betAmount;
       userBalance();
+
+      LEFT_BET_BUTTON.textContent = "CANCEL";
+      LEFT_BET_BUTTON.style.backgroundColor = "red";
+      LEFT_BET_BUTTON.style.color = "white";
     }
   });
   RIGTH_BET_BUTTON.addEventListener("click", () => {
     let betAmount = parseFloat(RIGTH_INPUT.value) || 0;
-  
+
+    if (RIGTH_BET_BUTTON.textContent === "CANCEL") {
+      RIGTH_BET_BUTTON.textContent = `${betAmount.toFixed(2)} BET`;
+      RIGTH_BET_BUTTON.style.backgroundColor = "";
+      RIGTH_BET_BUTTON.style.color = "";
+      walletBalance += betAmount;
+      userBalance();
+      return;
+    }
+
     if (betAmount > walletBalance) {
       INSUFFICIENT_BALANCE.style.display = "block";
       setTimeout(() => {
@@ -264,6 +314,9 @@ const betButton = () => {
     if (betAmount > 0 && walletBalance >= betAmount) {
       walletBalance -= betAmount;
       userBalance();
+      RIGTH_BET_BUTTON.textContent = "CANCEL";
+      RIGTH_BET_BUTTON.style.backgroundColor = "red";
+      RIGTH_BET_BUTTON.style.color = "white";
     }
   });
 };
