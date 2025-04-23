@@ -31,37 +31,53 @@ const RIGTH_TWENTYFIVE_BUTTON = document.getElementById("r-twenty-five");
 const RIGTH_ONEHUNDRED_BUTTON = document.getElementById("r-one-hundred");
 
 let index = 1.0;
+let interval;
+let isRunning = false;
+let maxDelay = 120000;
+
 let walletBalance = 1000.0;
 
 const userBalance = () => {
   balance.textContent = walletBalance.toFixed(2);
 };
 
-// const indexNumber = () =>{
-//   if (index >= 0 && index < 5) {
-//     index += 0.02;
-//     index = parseFloat(index.toFixed(2));
-//     document.querySelector('.index').innerHTML = index + "x";
-//   }else if(index >= 5 && index < 20){
-//     index += 0.12;
-//     index = parseFloat(index.toFixed(2));
-//     document.querySelector('.index').innerHTML = index + "x";
-//   }
-//   else if(index >= 20 && index < 50){
-//     index += 1.12;
-//     index = parseFloat(index.toFixed(2));
-//     document.querySelector('.index').innerHTML = index + "x";
-//   }else if(index >= 50 && index < 100){
-//     index += 2.16;
-//     index = parseFloat(index.toFixed(2));
-//     document.querySelector('.index').innerHTML = index + "x";
-//   }else if(index >= 100){
-//     index += 3.16;
-//     index = parseFloat(index.toFixed(2));
-//     document.querySelector('.index').innerHTML = index + "x";
-//   }
-// }
+const indexNumber = () => {
+  if (index >= 0 && index < 5) {
+    index += 0.02;
+  } else if (index >= 5 && index < 20) {
+    index += 0.12;
+  } else if (index >= 20 && index < 50) {
+    index += 1.12;
+  } else if (index >= 50 && index < 100) {
+    index += 2.16;
+  } else if (index >= 100) {
+    index += 3.16;
+  }
+  index = parseFloat(index.toFixed(2));
+  document.querySelector(".index").innerHTML = index + "x";
+};
 // setInterval(indexNumber, 100);
+
+const startInterval = () => {
+  if (!isRunning) {
+    isRunning = true;
+    interval = setInterval(indexNumber, 100);
+  }
+  const stopTime = Math.random() * (maxDelay - 100) + 100;
+  setTimeout(() => {
+    stopInterval();
+  }, stopTime);
+};
+const stopInterval = () => {
+  clearInterval(interval);
+  isRunning = false;
+
+  const restartDelay = 3000;
+  setTimeout(() => {
+    index = 1.0;
+    startInterval();
+  }, restartDelay);
+};
 
 const getFullScreen = () => {
   const enterFullScreen = () => {
@@ -322,7 +338,8 @@ const betButton = () => {
 };
 
 userBalance();
-// indexNumber();
+indexNumber();
+startInterval();
 getFullScreen();
 airplane();
 betBtn();
