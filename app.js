@@ -58,14 +58,6 @@ const indexNumber = () => {
 };
 // setInterval(indexNumber, 100);
 
-const resetBetButton = () => {
-  const betAmount = parseFloat(LEFT_INPUT.value) || 0;
-  if (LEFT_BET_BUTTON.textContent === "CANCEL" || LEFT_BET_BUTTON.textContent === "WAIT") {
-    LEFT_BET_BUTTON.textContent = `${betAmount.toFixed(2)} BET`;
-    LEFT_BET_BUTTON.style.backgroundColor = "";
-    LEFT_BET_BUTTON.style.color = "";
-  }
-};
 const startInterval = () => {
   if (!isRunning) {
     isRunning = true;
@@ -303,12 +295,6 @@ const betButton = () => {
       return;
     }
 
-    // if (isRunning && (LEFT_BET_BUTTON.textContent === "CANCEL")) {
-    //   LEFT_BET_BUTTON.textContent = `${betAmount.toFixed(2)} BET`;
-    //   LEFT_BET_BUTTON.style.backgroundColor = "";
-    //   LEFT_BET_BUTTON.style.color = "";
-    // }
-
     if (LEFT_BET_BUTTON.textContent === "WAIT") {
       LEFT_BET_BUTTON.textContent = `${betAmount.toFixed(2)} BET`;
       LEFT_BET_BUTTON.style.backgroundColor = "";
@@ -378,6 +364,16 @@ const betButton = () => {
     }
   });
 };
+
+const resetBetButton = () => {
+  const betAmount = parseFloat(LEFT_INPUT.value) || 0;
+  if (LEFT_BET_BUTTON.textContent === "CANCEL" || LEFT_BET_BUTTON.textContent === "WAIT") {
+    LEFT_BET_BUTTON.textContent = `${betAmount.toFixed(2)} BET`;
+    LEFT_BET_BUTTON.style.backgroundColor = "";
+    LEFT_BET_BUTTON.style.color = "";
+  }
+};
+
 
 userBalance();
 indexNumber();
