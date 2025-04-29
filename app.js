@@ -61,7 +61,7 @@ const indexNumber = () => {
 const startInterval = () => {
   if (!isRunning) {
     isRunning = true;
-    resetBetButton();
+    multiplicationValue();
     interval = setInterval(indexNumber, 100);
   }
   const stopTime = Math.random() * (maxDelay - 100) + 100;
@@ -365,10 +365,12 @@ const betButton = () => {
   });
 };
 
-const resetBetButton = () => {
+const multiplicationValue = () => {
   const betAmount = parseFloat(LEFT_INPUT.value) || 0;
+  const multiplication = betAmount * index;
   if (LEFT_BET_BUTTON.textContent === "CANCEL" || LEFT_BET_BUTTON.textContent === "WAIT") {
-    LEFT_BET_BUTTON.textContent = `${betAmount.toFixed(2)} BET`;
+    LEFT_BET_BUTTON.textContent = `${multiplication.toFixed(2)} BET`;
+    // LEFT_BET_BUTTON.textContent = `${betAmount.toFixed(2)} BET`;
     LEFT_BET_BUTTON.style.backgroundColor = "";
     LEFT_BET_BUTTON.style.color = "";
   }
