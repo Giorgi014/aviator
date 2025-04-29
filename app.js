@@ -33,7 +33,7 @@ const RIGTH_ONEHUNDRED_BUTTON = document.getElementById("r-one-hundred");
 let index = 1.0;
 let interval;
 let isRunning = false;
-let maxDelay = 120000;
+let maxDelay = 12000;
 
 let walletBalance = 1000.0;
 
@@ -294,19 +294,39 @@ const betButton = () => {
       return;
     }
 
+    if (isRunning && (LEFT_BET_BUTTON.textContent === "CANCEL")) {
+      LEFT_BET_BUTTON.textContent = `${betAmount.toFixed(2)} BET`;
+      LEFT_BET_BUTTON.style.backgroundColor = "";
+      LEFT_BET_BUTTON.style.color = "";
+    }
+
+    if (LEFT_BET_BUTTON.textContent === "WAIT") {
+      LEFT_BET_BUTTON.textContent = `${betAmount.toFixed(2)} BET`;
+      LEFT_BET_BUTTON.style.backgroundColor = "";
+      LEFT_BET_BUTTON.style.color = "";
+      userBalance();
+      return;
+    }
+
     if (betAmount > walletBalance) {
       INSUFFICIENT_BALANCE.style.display = "flex";
       setTimeout(() => {
         INSUFFICIENT_BALANCE.style.display = "none";
       }, 3000);
     }
-    if (betAmount > 0 && walletBalance >= betAmount) {
-      walletBalance -= betAmount;
-      userBalance();
-
+    if (isRunning) {
+      LEFT_BET_BUTTON.textContent = "WAIT";
+      LEFT_BET_BUTTON.style.backgroundColor = "red";
+      LEFT_BET_BUTTON.style.color = "white";
+      return;
+    } else {
       LEFT_BET_BUTTON.textContent = "CANCEL";
       LEFT_BET_BUTTON.style.backgroundColor = "red";
       LEFT_BET_BUTTON.style.color = "white";
+    }
+    if (betAmount > 0 && walletBalance >= betAmount) {
+      walletBalance -= betAmount;
+      userBalance();
     }
   });
   RIGTH_BET_BUTTON.addEventListener("click", () => {
@@ -320,19 +340,32 @@ const betButton = () => {
       userBalance();
       return;
     }
-
+    if (RIGTH_BET_BUTTON.textContent === "WAIT") {
+      RIGTH_BET_BUTTON.textContent = `${betAmount.toFixed(2)} BET`;
+      RIGTH_BET_BUTTON.style.backgroundColor = "";
+      RIGTH_BET_BUTTON.style.color = "";
+      userBalance();
+      return;
+    }
     if (betAmount > walletBalance) {
       INSUFFICIENT_BALANCE.style.display = "block";
       setTimeout(() => {
         INSUFFICIENT_BALANCE.style.display = "none";
       }, 3000);
     }
-    if (betAmount > 0 && walletBalance >= betAmount) {
-      walletBalance -= betAmount;
-      userBalance();
+    if (isRunning) {
+      RIGTH_BET_BUTTON.textContent = "WAIT";
+      RIGTH_BET_BUTTON.style.backgroundColor = "red";
+      RIGTH_BET_BUTTON.style.color = "white";
+      return;
+    } else {
       RIGTH_BET_BUTTON.textContent = "CANCEL";
       RIGTH_BET_BUTTON.style.backgroundColor = "red";
       RIGTH_BET_BUTTON.style.color = "white";
+    }
+    if (betAmount > 0 && walletBalance >= betAmount) {
+      walletBalance -= betAmount;
+      userBalance();
     }
   });
 };
