@@ -58,9 +58,18 @@ const indexNumber = () => {
 };
 // setInterval(indexNumber, 100);
 
+const resetBetButton = () => {
+  const betAmount = parseFloat(LEFT_INPUT.value) || 0;
+  if (LEFT_BET_BUTTON.textContent === "CANCEL" || LEFT_BET_BUTTON.textContent === "WAIT") {
+    LEFT_BET_BUTTON.textContent = `${betAmount.toFixed(2)} BET`;
+    LEFT_BET_BUTTON.style.backgroundColor = "";
+    LEFT_BET_BUTTON.style.color = "";
+  }
+};
 const startInterval = () => {
   if (!isRunning) {
     isRunning = true;
+    resetBetButton();
     interval = setInterval(indexNumber, 100);
   }
   const stopTime = Math.random() * (maxDelay - 100) + 100;
@@ -294,11 +303,11 @@ const betButton = () => {
       return;
     }
 
-    if (isRunning && (LEFT_BET_BUTTON.textContent === "CANCEL")) {
-      LEFT_BET_BUTTON.textContent = `${betAmount.toFixed(2)} BET`;
-      LEFT_BET_BUTTON.style.backgroundColor = "";
-      LEFT_BET_BUTTON.style.color = "";
-    }
+    // if (isRunning && (LEFT_BET_BUTTON.textContent === "CANCEL")) {
+    //   LEFT_BET_BUTTON.textContent = `${betAmount.toFixed(2)} BET`;
+    //   LEFT_BET_BUTTON.style.backgroundColor = "";
+    //   LEFT_BET_BUTTON.style.color = "";
+    // }
 
     if (LEFT_BET_BUTTON.textContent === "WAIT") {
       LEFT_BET_BUTTON.textContent = `${betAmount.toFixed(2)} BET`;
