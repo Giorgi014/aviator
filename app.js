@@ -37,6 +37,13 @@ let maxDelay = 12000;
 
 let walletBalance = 1000.0;
 
+let LEFT_BET_ACTIVE = false;
+let RIGTH_BET_ACTIVE = false;
+
+let PENDING_LEFT_BET = false;
+let PENDING_RIGTH_BET = false;
+let PENDING_BET_AMOUNT = 0;
+
 const userBalance = () => {
   balance.textContent = walletBalance.toFixed(2);
 };
@@ -61,8 +68,24 @@ const indexNumber = () => {
 
 const startInterval = () => {
   if (!isRunning) {
+    if (PENDING_LEFT_BET) {
+      if (PENDING_BET_AMOUNT <= walletBalance) {
+        LEFT_BET_ACTIVE = true;
+        walletBalance -= PENDING_BET_AMOUNT;
+        userBalance();
+      }
+      PENDING_LEFT_BET = false;
+    }
+    if (PENDING_RIGTH_BET) {
+      if (PENDING_BET_AMOUNT <= walletBalance) {
+        LEFT_BET_ACTIVE = true;
+        walletBalance -= PENDING_BET_AMOUNT;
+        userBalance();
+      }
+      PENDING_RIGTH_BET = false;
+    }
     isRunning = true;
-    multiplicationValue();
+    // multiplicationValue();
     interval = setInterval(indexNumber, 100);
   }
   const stopTime = Math.random() * (maxDelay - 100) + 100;
@@ -73,7 +96,20 @@ const startInterval = () => {
 const stopInterval = () => {
   clearInterval(interval);
   isRunning = false;
-  
+  if (LEFT_BET_ACTIVE) {
+    const leftBetAmount = parseFloat(LEFT_INPUT.value) || 0;
+    LEFT_BET_ACTIVE = false;
+    LEFT_BET_BUTTON.textContent = `${leftBetAmount.toFixed(2)} BET`;
+    LEFT_BET_BUTTON.style.backgroundColor = "";
+    LEFT_BET_BUTTON.style.color = "";
+  }
+  if (RIGTH_BET_ACTIVE) {
+    const rigthBetAmount = parseFloat(LEFT_INPUT.value) || 0;
+    RIGTH_BET_ACTIVE = false;
+    RIGTH_BET_BUTTON.textContent = `${rigthBetAmount.toFixed(2)} BET`;
+    RIGTH_BET_BUTTON.style.backgroundColor = "";
+    RIGTH_BET_BUTTON.style.color = "";
+  }
   const restartDelay = 3000;
   setTimeout(() => {
     index = 1.0;
@@ -198,7 +234,7 @@ const betBtn = () => {
 
   LEFT_PLUS_BUTTON.addEventListener("click", () => {
     let value = parseFloat(LEFT_INPUT.value) || 1.0;
-    if (value < 500) {
+    if (value < 500 && !LEFT_BET_ACTIVE) {
       value += 1;
       LEFT_INPUT.value = value.toFixed(2);
       LEFT_BET_BUTTON.textContent = `${value.toFixed(2)} BET`;
@@ -206,7 +242,7 @@ const betBtn = () => {
   });
   LEFT_MINUS_BUTTON.addEventListener("click", () => {
     let value = parseFloat(LEFT_INPUT.value) || 1.0;
-    if (value > 1) {
+    if (value > 1 && !LEFT_BET_ACTIVE) {
       value -= 1;
       LEFT_INPUT.value = value.toFixed(2);
       LEFT_BET_BUTTON.textContent = `${value.toFixed(2)} BET`;
@@ -217,7 +253,7 @@ const betBtn = () => {
 
   RIGTH_PLUS_BUTTON.addEventListener("click", () => {
     let value = parseFloat(RIGTH_INPUT.value) || 1.0;
-    if (value < 500) {
+    if (value < 500 && !RIGTH_BET_ACTIVE) {
       value += 1;
       RIGTH_INPUT.value = value.toFixed(2);
       RIGTH_BET_BUTTON.textContent = `${value.toFixed(2)} BET`;
@@ -225,7 +261,7 @@ const betBtn = () => {
   });
   RIGTH_MINUS_BUTTON.addEventListener("click", () => {
     let value = parseFloat(RIGTH_INPUT.value) || 1.0;
-    if (value > 1) {
+    if (value > 1 && !RIGTH_BET_ACTIVE) {
       value -= 1;
       RIGTH_INPUT.value = value.toFixed(2);
       RIGTH_BET_BUTTON.textContent = `${value.toFixed(2)} BET`;
@@ -236,7 +272,7 @@ const betBtn = () => {
 const singleLeftButtons = (v) => {
   let currentValue = parseFloat(LEFT_INPUT.value) || 0;
   let addedValue = v;
-  if (currentValue < 500) {
+  if (currentValue < 500 && !LEFT_BET_ACTIVE) {
     let newValue = currentValue + addedValue;
     LEFT_INPUT.value = newValue.toFixed(2);
     LEFT_BET_BUTTON.textContent = `${newValue.toFixed(2)} BET`;
@@ -245,7 +281,7 @@ const singleLeftButtons = (v) => {
 const singleRightButtons = (v) => {
   let currentValue = parseFloat(RIGTH_INPUT.value) || 0;
   let addedValue = v;
-  if (currentValue < 500) {
+  if (currentValue < 500 && !RIGTH_BET_ACTIVE) {
     let newValue = currentValue + addedValue;
     RIGTH_INPUT.value = newValue.toFixed(2);
     RIGTH_BET_BUTTON.textContent = `${newValue.toFixed(2)} BET`;
@@ -286,7 +322,6 @@ const betValue = () => {
 const betButton = () => {
   LEFT_BET_BUTTON.addEventListener("click", () => {
     let betAmount = parseFloat(LEFT_INPUT.value) || 0;
-    
 
     if (LEFT_BET_BUTTON.textContent === "CANCEL") {
       LEFT_BET_BUTTON.textContent = `${betAmount.toFixed(2)} BET`;
@@ -295,9 +330,13 @@ const betButton = () => {
       walletBalance += betAmount;
       userBalance();
       return;
+    } else {
+      LEFT_BET_ACTIVE = true;
+      LEFT_BET_BUTTON.textContent = "CANCEL";
+      LEFT_BET_BUTTON.style.backgroundColor = "red";
     }
 
-    if (LEFT_BET_BUTTON.textContent === "WAIT") {
+    if (LEFT_BET_BUTTON.textContent === "WAITING") {
       LEFT_BET_BUTTON.textContent = `${betAmount.toFixed(2)} BET`;
       LEFT_BET_BUTTON.style.backgroundColor = "";
       LEFT_BET_BUTTON.style.color = "";
@@ -312,15 +351,20 @@ const betButton = () => {
       }, 3000);
     }
     if (isRunning) {
-      LEFT_BET_BUTTON.textContent = "WAIT";
-      LEFT_BET_BUTTON.style.backgroundColor = "red";
-      LEFT_BET_BUTTON.style.color = "white";
-      return;
-    } else {
-      LEFT_BET_BUTTON.textContent = "CANCEL";
-      LEFT_BET_BUTTON.style.backgroundColor = "red";
-      LEFT_BET_BUTTON.style.color = "white";
+      if (LEFT_BET_ACTIVE) {
+        PENDING_LEFT_BET = true;
+        PENDING_BET_AMOUNT = betAmount;
+        LEFT_BET_BUTTON.textContent = "WAITING";
+        LEFT_BET_BUTTON.style.backgroundColor = "red";
+        LEFT_BET_BUTTON.style.color = "white";
+        return;
+      }
     }
+    // else {
+    //   LEFT_BET_BUTTON.textContent = "CANCEL";
+    //   LEFT_BET_BUTTON.style.backgroundColor = "red";
+    //   LEFT_BET_BUTTON.style.color = "white";
+    // }
     if (betAmount > 0 && walletBalance >= betAmount) {
       walletBalance -= betAmount;
       userBalance();
@@ -336,8 +380,12 @@ const betButton = () => {
       walletBalance += betAmount;
       userBalance();
       return;
+    } else {
+      RIGTH_BET_ACTIVE = true;
+      RIGTH_BET_BUTTON.textContent = "CANCEL";
+      RIGTH_BET_BUTTON.style.backgroundColor = "red";
     }
-    if (RIGTH_BET_BUTTON.textContent === "WAIT") {
+    if (RIGTH_BET_BUTTON.textContent === "WAITING") {
       RIGTH_BET_BUTTON.textContent = `${betAmount.toFixed(2)} BET`;
       RIGTH_BET_BUTTON.style.backgroundColor = "";
       RIGTH_BET_BUTTON.style.color = "";
@@ -351,15 +399,20 @@ const betButton = () => {
       }, 3000);
     }
     if (isRunning) {
-      RIGTH_BET_BUTTON.textContent = "WAIT";
-      RIGTH_BET_BUTTON.style.backgroundColor = "red";
-      RIGTH_BET_BUTTON.style.color = "white";
-      return;
-    } else {
-      RIGTH_BET_BUTTON.textContent = "CANCEL";
-      RIGTH_BET_BUTTON.style.backgroundColor = "red";
-      RIGTH_BET_BUTTON.style.color = "white";
+      if (RIGTH_BET_ACTIVE) {
+        PENDING_RIGTH_BET = true;
+        PENDING_BET_AMOUNT = betAmount;
+        RIGTH_BET_BUTTON.textContent = "WAITING";
+        RIGTH_BET_BUTTON.style.backgroundColor = "red";
+        RIGTH_BET_BUTTON.style.color = "white";
+        return;
+      }
     }
+    // else {
+    //   RIGTH_BET_BUTTON.textContent = "CANCEL";
+    //   RIGTH_BET_BUTTON.style.backgroundColor = "red";
+    //   RIGTH_BET_BUTTON.style.color = "white";
+    // }
     if (betAmount > 0 && walletBalance >= betAmount) {
       walletBalance -= betAmount;
       userBalance();
@@ -370,26 +423,67 @@ const betButton = () => {
 const multiplicationValue = () => {
   const leftBetAmount = parseFloat(LEFT_INPUT.value) || 0;
   const rigthBetAmount = parseFloat(RIGTH_INPUT.value) || 0;
-  if (LEFT_BET_BUTTON.textContent === "CANCEL" || LEFT_BET_BUTTON.textContent === "WAIT") {
+
+  if (
+    LEFT_BET_BUTTON.textContent === "CANCEL" ||
+    LEFT_BET_BUTTON.textContent === "WAITING"
+  ) {
     LEFT_BET_BUTTON.textContent = `${leftBetAmount.toFixed(2)} BET`;
     LEFT_BET_BUTTON.style.backgroundColor = "";
     LEFT_BET_BUTTON.style.color = "";
   }
- 
-  if (RIGTH_BET_BUTTON.textContent === "CANCEL" || RIGTH_BET_BUTTON.textContent === "WAIT") {
+
+  if (
+    RIGTH_BET_BUTTON.textContent === "CANCEL" ||
+    RIGTH_BET_BUTTON.textContent === "WAITING"
+  ) {
     RIGTH_BET_BUTTON.textContent = `${rigthBetAmount.toFixed(2)} BET`;
     RIGTH_BET_BUTTON.style.backgroundColor = "";
     RIGTH_BET_BUTTON.style.color = "";
   }
 
-  if (isRunning) {
+  if (isRunning && LEFT_BET_ACTIVE) {
     const leftMultiplication = index * leftBetAmount;
-    const rightMultiplication = index * rigthBetAmount;
     LEFT_BET_BUTTON.textContent = `${leftMultiplication.toFixed(2)}GEL`;
-    RIGTH_BET_BUTTON.textContent = `${rightMultiplication.toFixed(2)}GEL`;
+    LEFT_BET_BUTTON.style.backgroundColor = "orange";
+    LEFT_BET_BUTTON.style.color = "white";
+  } else {
+    LEFT_BET_BUTTON.textContent = `${leftBetAmount.toFixed(2)} BET`;
+    LEFT_BET_BUTTON.style.backgroundColor = "";
+    LEFT_BET_BUTTON.style.color = "";
   }
-};
 
+  if (isRunning && RIGTH_BET_ACTIVE) {
+    const rigthMultiplication = index * rigthBetAmount;
+    RIGTH_BET_BUTTON.textContent = `${rigthMultiplication.toFixed(2)}GEL`;
+    RIGTH_BET_BUTTON.style.backgroundColor = "orange";
+    RIGTH_BET_BUTTON.style.color = "white";
+  } else {
+    RIGTH_BET_BUTTON.textContent = `${rigthBetAmount.toFixed(2)} BET`;
+    RIGTH_BET_BUTTON.style.backgroundColor = "";
+    RIGTH_BET_BUTTON.style.color = "";
+  }
+
+  // if (isRunning && PENDING_LEFT_BET) {
+  //   LEFT_BET_BUTTON.textContent = "WAITING";
+  //   LEFT_BET_BUTTON.style.backgroundColor = "red";
+  //   LEFT_BET_BUTTON.style.color = "white";
+  // } else {
+  //   LEFT_BET_BUTTON.textContent = `${leftBetAmount.toFixed(2)} BET`;
+  //   LEFT_BET_BUTTON.style.backgroundColor = "";
+  //   LEFT_BET_BUTTON.style.color = "";
+  // }
+
+  // if (isRunning && PENDING_RIGTH_BET) {
+  //   RIGTH_BET_BUTTON.textContent = "WAITING";
+  //   RIGTH_BET_BUTTON.style.backgroundColor = "red";
+  //   RIGTH_BET_BUTTON.style.color = "white";
+  // } else {
+  //   RIGTH_BET_BUTTON.textContent = `${rigthBetAmount.toFixed(2)} BET`;
+  //   RIGTH_BET_BUTTON.style.backgroundColor = "";
+  //   RIGTH_BET_BUTTON.style.color = "";
+  // }
+};
 
 userBalance();
 indexNumber();
