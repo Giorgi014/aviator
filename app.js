@@ -78,7 +78,7 @@ const startInterval = () => {
     }
     if (PENDING_RIGTH_BET) {
       if (PENDING_BET_AMOUNT <= walletBalance) {
-        LEFT_BET_ACTIVE = true;
+        RIGTH_BET_ACTIVE = true;
         walletBalance -= PENDING_BET_AMOUNT;
         userBalance();
       }
@@ -104,7 +104,7 @@ const stopInterval = () => {
     LEFT_BET_BUTTON.style.color = "";
   }
   if (RIGTH_BET_ACTIVE) {
-    const rigthBetAmount = parseFloat(LEFT_INPUT.value) || 0;
+    const rigthBetAmount = parseFloat(RIGTH_INPUT.value) || 0;
     RIGTH_BET_ACTIVE = false;
     RIGTH_BET_BUTTON.textContent = `${rigthBetAmount.toFixed(2)} BET`;
     RIGTH_BET_BUTTON.style.backgroundColor = "";
@@ -319,7 +319,7 @@ const betValue = () => {
     singleRightButtons(100.0);
   });
 };
-const betButton = () => {
+const leftBetButton = () => {
   LEFT_BET_BUTTON.addEventListener("click", () => {
     let betAmount = parseFloat(LEFT_INPUT.value) || 0;
 
@@ -340,6 +340,7 @@ const betButton = () => {
       LEFT_BET_BUTTON.textContent = `${betAmount.toFixed(2)} BET`;
       LEFT_BET_BUTTON.style.backgroundColor = "";
       LEFT_BET_BUTTON.style.color = "";
+      PENDING_LEFT_BET = false;
       userBalance();
       return;
     }
@@ -370,6 +371,9 @@ const betButton = () => {
       userBalance();
     }
   });
+};
+
+const rightBetButton = () => {
   RIGTH_BET_BUTTON.addEventListener("click", () => {
     let betAmount = parseFloat(RIGTH_INPUT.value) || 0;
 
@@ -442,16 +446,36 @@ const multiplicationValue = () => {
     RIGTH_BET_BUTTON.style.color = "";
   }
 
-  if (isRunning && LEFT_BET_ACTIVE) {
-    const leftMultiplication = index * leftBetAmount;
-    LEFT_BET_BUTTON.textContent = `${leftMultiplication.toFixed(2)}GEL`;
-    LEFT_BET_BUTTON.style.backgroundColor = "orange";
-    LEFT_BET_BUTTON.style.color = "white";
-  } else {
+  // if (isRunning && LEFT_BET_ACTIVE) {
+  //   const leftMultiplication = index * leftBetAmount;
+  //   LEFT_BET_BUTTON.textContent = `${leftMultiplication.toFixed(2)}GEL`;
+  //   LEFT_BET_BUTTON.style.backgroundColor = "orange";
+  //   LEFT_BET_BUTTON.style.color = "white";
+  // } else {
+  //   LEFT_BET_BUTTON.textContent = `${leftBetAmount.toFixed(2)} BET`;
+  //   LEFT_BET_BUTTON.style.backgroundColor = "";
+  //   LEFT_BET_BUTTON.style.color = "";
+  // }
+
+  if (isRunning) {
+    if (LEFT_BET_ACTIVE) {
+      const leftMultiplication = index * leftBetAmount;
+      LEFT_BET_BUTTON.textContent = `${leftMultiplication.toFixed(2)}GEL`;
+      LEFT_BET_BUTTON.style.backgroundColor = "orange";
+      LEFT_BET_BUTTON.style.color = "white";
+    } 
+    else if (PENDING_LEFT_BET) {
+      LEFT_BET_BUTTON.textContent = "WAITING";
+      LEFT_BET_BUTTON.style.backgroundColor = "red";
+      LEFT_BET_BUTTON.style.color = "white";
+    }
+  } 
+  else {
     LEFT_BET_BUTTON.textContent = `${leftBetAmount.toFixed(2)} BET`;
     LEFT_BET_BUTTON.style.backgroundColor = "";
     LEFT_BET_BUTTON.style.color = "";
   }
+
 
   if (isRunning && RIGTH_BET_ACTIVE) {
     const rigthMultiplication = index * rigthBetAmount;
@@ -464,15 +488,15 @@ const multiplicationValue = () => {
     RIGTH_BET_BUTTON.style.color = "";
   }
 
-  // if (isRunning && PENDING_LEFT_BET) {
-  //   LEFT_BET_BUTTON.textContent = "WAITING";
-  //   LEFT_BET_BUTTON.style.backgroundColor = "red";
-  //   LEFT_BET_BUTTON.style.color = "white";
-  // } else {
-  //   LEFT_BET_BUTTON.textContent = `${leftBetAmount.toFixed(2)} BET`;
-  //   LEFT_BET_BUTTON.style.backgroundColor = "";
-  //   LEFT_BET_BUTTON.style.color = "";
-  // }
+  if (isRunning && PENDING_LEFT_BET) {
+    LEFT_BET_BUTTON.textContent = "WAITING";
+    LEFT_BET_BUTTON.style.backgroundColor = "red";
+    LEFT_BET_BUTTON.style.color = "white";
+  } else {
+    LEFT_BET_BUTTON.textContent = `${leftBetAmount.toFixed(2)} BET`;
+    LEFT_BET_BUTTON.style.backgroundColor = "";
+    LEFT_BET_BUTTON.style.color = "";
+  }
 
   // if (isRunning && PENDING_RIGTH_BET) {
   //   RIGTH_BET_BUTTON.textContent = "WAITING";
@@ -492,4 +516,5 @@ getFullScreen();
 airplane();
 betBtn();
 betValue();
-betButton();
+leftBetButton();
+rightBetButton();
