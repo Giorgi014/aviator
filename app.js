@@ -32,7 +32,7 @@ const RIGTH_FIVE_BUTTON = document.getElementById("r-five");
 const RIGTH_TWENTYFIVE_BUTTON = document.getElementById("r-twenty-five");
 const RIGTH_ONEHUNDRED_BUTTON = document.getElementById("r-one-hundred");
 
-let index = 1.0;
+// let index = 1.0;
 let interval;
 // let isRunning = false;
 let maxDelay = 12000;
@@ -369,7 +369,7 @@ const buttonUpdate = (element, index, betAmount = 0) => {
       break;
 
     case "WAITING":
-      element.textContent = "WAITING";
+      element.textContent = `WAITING ${betAmount.toFixed(2)} GEL`;
       element.style.backgroundColor = "red";
       element.style.color = "white";
       break;
@@ -452,7 +452,7 @@ const betButton = (side) => {
 };
 const init = () => {
   LEFT_BET_BUTTON.addEventListener("click", () => betButton("left"));
-  RIGTH_BET_BUTTON.addEventListener("click", () => betButton("rigth"));
+  RIGTH_BET_BUTTON.addEventListener("click", () => betButton("right"));
 
   userBalance();
   startInterval();
