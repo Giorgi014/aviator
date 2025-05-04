@@ -416,7 +416,12 @@ const betButton = (side) => {
     } else {
       gameState.rightButton = 0;
     }
-    gameState.walletBalance += betAmount;
+    if (currentStatus === "WAITING" && GAME_STATUS === "PLAYING") {
+      gameState.walletBalance += betAmount;
+      userBalance();
+      return;
+    }
+    // gameState.walletBalance += betAmount;
     buttonUpdate(button, 0, betAmount);
     userBalance();
     return;
