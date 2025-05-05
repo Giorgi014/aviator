@@ -32,11 +32,12 @@ const RIGHT_FIVE_BUTTON = document.getElementById("r-five");
 const RIGHT_TWENTYFIVE_BUTTON = document.getElementById("r-twenty-five");
 const RIGHT_ONEHUNDRED_BUTTON = document.getElementById("r-one-hundred");
 
-const STOREAGE_CONTAINER = document.getElementById("storeage-container");
-const LAST_INDEX = document.getElementsByClassName("storeage");
-
+// let index = 1.0;
 let interval;
+// let isRunning = false;
 let maxDelay = 12000;
+
+// let walletBalance = 1000.0;
 
 const BUTTON_STATUS = ["INACTIVE", "WAITING", "BETTING"];
 const GAME_STATUS = ["PLAYING", "RESTARTING"];
@@ -50,40 +51,12 @@ const gameState = {
   walletBalance: 1000.0,
 };
 
-const getLastIndex = () => {
-  const lastIndices = localStorage.getItem("lastAviatorIndices");
-  return lastIndices ? JSON.parse(lastIndices) : [];
-};
+// let LEFT_BET_ACTIVE = false;
+// let RIGHT_BET_ACTIVE = false;
 
-const renderHistory = (items) => {
-  STOREAGE_CONTAINER.innerHTML = '';
-  
-  items.forEach((item, index) => {
-    const historyItem = document.createElement('div');
-    historyItem.className = 'storeage';
-    historyItem.textContent = item.toFixed(2);
-    
-    if (index === items.length - 1) {
-      historyItem.classList.add('latest');
-    }
-    
-    STOREAGE_CONTAINER.appendChild(historyItem);
-  });
-}
-
-const addNewIndex = (newIndex) => {
-  const indices = getLastIndex();
-  indices.push(newIndex);
-  if (indices.length < 10) indices.push();
-  localStorage.setItem("lastAviatorIndices", JSON.stringify(indices));
-
-  renderHistory(indices)
-};
-
-const displayLastIndex = () => {
-  const indices = getLastIndex();
-  STOREAGE_CONTAINER[0].textContent = indices.map(v => v.toFixed(2));
-};
+// let PENDING_LEFT_BET = false;
+// let PENDING_RIGHT_BET = false;
+// let PENDING_BET_AMOUNT = 0;
 
 const userBalance = () => {
   balance.textContent = gameState.walletBalance.toFixed(2);
@@ -134,17 +107,17 @@ const startInterval = () => {
       }
     }
 
+    // multiplicationValue();
     userBalance();
     interval = setInterval(indexNumber, 100);
   }
-
   const stopTime = Math.random() * (maxDelay - 100) + 100;
   setTimeout(() => {
     stopInterval();
   }, stopTime);
 };
-
 const stopInterval = () => {
+  clearInterval(interval);
   // if (LEFT_BET_ACTIVE) {
   //   const leftBetAmount = parseFloat(LEFT_INPUT.value) || 0;
   //   LEFT_BET_ACTIVE = false;
@@ -159,17 +132,17 @@ const stopInterval = () => {
   //   RIGHT_BET_BUTTON.style.backgroundColor = "";
   //   RIGHT_BET_BUTTON.style.color = "";
   // }
-  clearInterval(interval);
-
   gameState.isRunning = false;
   gameState.game = 1;
 
-  if (BUTTON_STATUS[gameState.leftButton] === "BETTING") {
+  if (BUTTON_STATUS[gameState.leftButton] === "RESTARTING") {
+    const winAmount = parseFloat(LEFT_INPUT.value) * gameState.index;
     gameState.leftButton = 0;
     buttonUpdate(LEFT_BET_BUTTON, 0, parseFloat(LEFT_INPUT.value));
   }
 
-  if (BUTTON_STATUS[gameState.rightButton] === "BETTING") {
+  if (BUTTON_STATUS[gameState.rightButton] === "RESTARTING") {
+    const winAmount = parseFloat(RIGHT_INPUT.value) * gameState.index;
     gameState.rightButton = 0;
     buttonUpdate(RIGHT_BET_BUTTON, 0, parseFloat(RIGHT_INPUT.value));
   }
@@ -181,15 +154,6 @@ const stopInterval = () => {
     gameState.game = 0;
     startInterval();
   }, restartDelay);
-
-  localStorage.setItem("lastAviatorIndex", gameState.index.toString());
-
-  addNewIndex(gameState.index);
-  displayLastIndex();
-
-  window.addEventListener("load", () => {
-    displayLastIndex();
-  });
 };
 
 const getFullScreen = () => {
@@ -452,10 +416,7 @@ const betButton = (side) => {
       gameState.rightButton = 0;
     }
 
-    if (currentStatus === "BETTING") {
-      gameState.walletBalance += betAmount * gameState.index;
-    }
-
+    // gameState.walletBalance += betAmount;
     buttonUpdate(button, 0, betAmount);
     userBalance();
     return;
@@ -481,6 +442,21 @@ const betButton = (side) => {
     }
     gameState.walletBalance -= betAmount;
   }
+  
+  // if (GAME_STATUS[gameState.game] === "PLAYING" && gameState.isRunning) {
+  //   const winAmount = betAmount * gameState.index;
+  //   gameState.walletBalance += winAmount;
+
+  //   if (side === "left") {
+  //     gameState.leftButton = 0;
+  //   } else {
+  //     gameState.rightButton = 0;
+  //   }
+
+  //   buttonUpdate(button, 0, betAmount);
+  //   userBalance();
+  //   return;
+  // }
 
   buttonUpdate(
     button,

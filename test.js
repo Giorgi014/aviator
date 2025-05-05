@@ -37,6 +37,14 @@ let maxDelay = 12000;
 
 let walletBalance = 1000.0;
 
+
+// let LEFT_BET_ACTIVE = false;
+// let RIGHT_BET_ACTIVE = false;
+
+// let PENDING_LEFT_BET = false;
+// let PENDING_RIGHT_BET = false;
+// let PENDING_BET_AMOUNT = 0;
+
 const userBalance = () => {
   balance.textContent = walletBalance.toFixed(2);
 };
