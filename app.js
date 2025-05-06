@@ -35,6 +35,11 @@ const RIGHT_ONEHUNDRED_BUTTON = document.getElementById("r-one-hundred");
 const STOREAGE_CONTAINER = document.getElementById("storeage-container");
 const LAST_INDEX = document.getElementsByClassName("storeage");
 
+const GAME_HISTORY = document.getElementsByClassName("game-history");
+const MY_GAME_HISTORY = document.getElementsByClassName("my-game");
+const MY_BET = document.getElementsByClassName("bet");
+const MY_WIN_BET = document.getElementsByClassName("win");
+
 let interval;
 let maxDelay = 12000;
 
@@ -145,20 +150,6 @@ const startInterval = () => {
 };
 
 const stopInterval = () => {
-  // if (LEFT_BET_ACTIVE) {
-  //   const leftBetAmount = parseFloat(LEFT_INPUT.value) || 0;
-  //   LEFT_BET_ACTIVE = false;
-  //   LEFT_BET_BUTTON.textContent = `${leftBetAmount.toFixed(2)} BET`;
-  //   LEFT_BET_BUTTON.style.backgroundColor = "";
-  //   LEFT_BET_BUTTON.style.color = "";
-  // }
-  // if (RIGHT_BET_ACTIVE) {
-  //   const righTBetAmount = parseFloat(RIGHT_INPUT.value) || 0;
-  //   RIGHT_BET_ACTIVE = false;
-  //   RIGHT_BET_BUTTON.textContent = `${righTBetAmount.toFixed(2)} BET`;
-  //   RIGHT_BET_BUTTON.style.backgroundColor = "";
-  //   RIGHT_BET_BUTTON.style.color = "";
-  // }
   clearInterval(interval);
 
   gameState.isRunning = false;
@@ -274,34 +265,6 @@ const airplane = () => {
   };
 
   animate();
-  // // ctx.strokeStyle = "red";
-  // // ctx.lineWidth = 2;
-  // // ctx.beginPath();
-
-  // // let startX = x + planeWidth / 2.2;
-  // // let startY = y + canvas.height / 1.3;
-  // // ctx.moveTo(startX, startY);
-
-  // let interval = setInterval(() => {
-  //   if (x >= max) {
-  //     clearInterval(interval);
-  //     return;
-  //   }
-  //   x += 5;
-  //   y -= 1.2;
-
-  //   plane.style.transform = `translate(${x}px, ${y}px)`;
-
-  //   ctx.fillStyle = "red";
-  //   ctx.beginPath();
-  //   ctx.arc(x + planeWidth / 2.2, y + canvas.height / 1.3, 2, 0, Math.PI * 2);
-  //   ctx.fill();
-  //   // const newX = x + planeWidth / 2.2;
-  //   // const newY = y + canvas.height / 1.3;
-
-  //   // ctx.lineTo(newX, newY);
-  //   // ctx.stroke();
-  // }, 16);
 };
 
 const betBtn = () => {
@@ -502,203 +465,3 @@ betBtn();
 betValue();
 updateGameState();
 betButton();
-
-// const leftBetButton = () => {
-//   LEFT_BET_BUTTON.addEventListener("click", () => {
-//     let betAmount = parseFloat(LEFT_INPUT.value) || 0;
-
-//     if (LEFT_BET_BUTTON.textContent === "CANCEL") {
-//       LEFT_BET_BUTTON.textContent = `${betAmount.toFixed(2)} BET`;
-//       LEFT_BET_BUTTON.style.backgroundColor = "";
-//       LEFT_BET_BUTTON.style.color = "";
-//       walletBalance += betAmount;
-//       userBalance();
-//       return;
-//     } else {
-//       LEFT_BET_ACTIVE = true;
-//       LEFT_BET_BUTTON.textContent = "CANCEL";
-//       LEFT_BET_BUTTON.style.backgroundColor = "red";
-//     }
-
-//     if (LEFT_BET_BUTTON.textContent === "WAITING") {
-//       LEFT_BET_BUTTON.textContent = `${betAmount.toFixed(2)} BET`;
-//       LEFT_BET_BUTTON.style.backgroundColor = "";
-//       LEFT_BET_BUTTON.style.color = "";
-//       PENDING_LEFT_BET = false;
-//       userBalance();
-//       return;
-//     }
-
-//     if (betAmount > walletBalance) {
-//       INSUFFICIENT_BALANCE.style.display = "flex";
-//       setTimeout(() => {
-//         INSUFFICIENT_BALANCE.style.display = "none";
-//       }, 3000);
-//     }
-//     if (isRunning) {
-//       if (LEFT_BET_ACTIVE) {
-//         PENDING_LEFT_BET = true;
-//         PENDING_BET_AMOUNT = betAmount;
-//         LEFT_BET_BUTTON.textContent = "WAITING";
-//         LEFT_BET_BUTTON.style.backgroundColor = "red";
-//         LEFT_BET_BUTTON.style.color = "white";
-//         return;
-//       }
-//     }
-//     // else {
-//     //   LEFT_BET_BUTTON.textContent = "CANCEL";
-//     //   LEFT_BET_BUTTON.style.backgroundColor = "red";
-//     //   LEFT_BET_BUTTON.style.color = "white";
-//     // }
-//     if (betAmount > 0 && walletBalance >= betAmount) {
-//       walletBalance -= betAmount;
-//       userBalance();
-//     }
-//   });
-// };
-
-// const rightBetButton = () => {
-//   RIGHT_BET_BUTTON.addEventListener("click", () => {
-//     let betAmount = parseFloat(RIGHT_INPUT.value) || 0;
-
-//     if (RIGHT_BET_BUTTON.textContent === "CANCEL") {
-//       RIGHT_BET_BUTTON.textContent = `${betAmount.toFixed(2)} BET`;
-//       RIGHT_BET_BUTTON.style.backgroundColor = "";
-//       RIGHT_BET_BUTTON.style.color = "";
-//       walletBalance += betAmount;
-//       userBalance();
-//       return;
-//     } else {
-//       RIGHT_BET_ACTIVE = true;
-//       RIGHT_BET_BUTTON.textContent = "CANCEL";
-//       RIGHT_BET_BUTTON.style.backgroundColor = "red";
-//     }
-//     if (RIGHT_BET_BUTTON.textContent === "WAITING") {
-//       RIGHT_BET_BUTTON.textContent = `${betAmount.toFixed(2)} BET`;
-//       RIGHT_BET_BUTTON.style.backgroundColor = "";
-//       RIGHT_BET_BUTTON.style.color = "";
-//       userBalance();
-//       return;
-//     }
-//     if (betAmount > walletBalance) {
-//       INSUFFICIENT_BALANCE.style.display = "block";
-//       setTimeout(() => {
-//         INSUFFICIENT_BALANCE.style.display = "none";
-//       }, 3000);
-//     }
-//     if (isRunning) {
-//       if (RIGHT_BET_ACTIVE) {
-//         PENDING_RIGHT_BET = true;
-//         PENDING_BET_AMOUNT = betAmount;
-//         RIGHT_BET_BUTTON.textContent = "WAITING";
-//         RIGHT_BET_BUTTON.style.backgroundColor = "red";
-//         RIGHT_BET_BUTTON.style.color = "white";
-//         return;
-//       }
-//     }
-//     // else {
-//     //   RIGHT_BET_BUTTON.textContent = "CANCEL";
-//     //   RIGHT_BET_BUTTON.style.backgroundColor = "red";
-//     //   RIGHT_BET_BUTTON.style.color = "white";
-//     // }
-//     if (betAmount > 0 && walletBalance >= betAmount) {
-//       walletBalance -= betAmount;
-//       userBalance();
-//     }
-//   });
-// };
-
-// const multiplicationValue = () => {
-//   const leftBetAmount = parseFloat(LEFT_INPUT.value) || 0;
-//   const righTBetAmount = parseFloat(RIGHT_INPUT.value) || 0;
-
-//   if (
-//     LEFT_BET_BUTTON.textContent === "CANCEL" ||
-//     LEFT_BET_BUTTON.textContent === "WAITING"
-//   ) {
-//     LEFT_BET_BUTTON.textContent = `${leftBetAmount.toFixed(2)} BET`;
-//     LEFT_BET_BUTTON.style.backgroundColor = "";
-//     LEFT_BET_BUTTON.style.color = "";
-//   }
-
-//   if (
-//     RIGHT_BET_BUTTON.textContent === "CANCEL" ||
-//     RIGHT_BET_BUTTON.textContent === "WAITING"
-//   ) {
-//     RIGHT_BET_BUTTON.textContent = `${righTBetAmount.toFixed(2)} BET`;
-//     RIGHT_BET_BUTTON.style.backgroundColor = "";
-//     RIGHT_BET_BUTTON.style.color = "";
-//   }
-
-//   // if (isRunning && LEFT_BET_ACTIVE) {
-//   //   const leftMultiplication = index * leftBetAmount;
-//   //   LEFT_BET_BUTTON.textContent = `${leftMultiplication.toFixed(2)}GEL`;
-//   //   LEFT_BET_BUTTON.style.backgroundColor = "orange";
-//   //   LEFT_BET_BUTTON.style.color = "white";
-//   // } else {
-//   //   LEFT_BET_BUTTON.textContent = `${leftBetAmount.toFixed(2)} BET`;
-//   //   LEFT_BET_BUTTON.style.backgroundColor = "";
-//   //   LEFT_BET_BUTTON.style.color = "";
-//   // }
-
-//   if (isRunning) {
-//     if (LEFT_BET_ACTIVE) {
-//       const leftMultiplication = index * leftBetAmount;
-//       LEFT_BET_BUTTON.textContent = `${leftMultiplication.toFixed(2)}GEL`;
-//       LEFT_BET_BUTTON.style.backgroundColor = "orange";
-//       LEFT_BET_BUTTON.style.color = "white";
-//     }
-//     else if (PENDING_LEFT_BET) {
-//       LEFT_BET_BUTTON.textContent = "WAITING";
-//       LEFT_BET_BUTTON.style.backgroundColor = "red";
-//       LEFT_BET_BUTTON.style.color = "white";
-//     }
-//   }
-//   else {
-//     LEFT_BET_BUTTON.textContent = `${leftBetAmount.toFixed(2)} BET`;
-//     LEFT_BET_BUTTON.style.backgroundColor = "";
-//     LEFT_BET_BUTTON.style.color = "";
-//   }
-
-//   if (isRunning && RIGHT_BET_ACTIVE) {
-//     const righTMultiplication = index * righTBetAmount;
-//     RIGHT_BET_BUTTON.textContent = `${righTMultiplication.toFixed(2)}GEL`;
-//     RIGHT_BET_BUTTON.style.backgroundColor = "orange";
-//     RIGHT_BET_BUTTON.style.color = "white";
-//   } else {
-//     RIGHT_BET_BUTTON.textContent = `${righTBetAmount.toFixed(2)} BET`;
-//     RIGHT_BET_BUTTON.style.backgroundColor = "";
-//     RIGHT_BET_BUTTON.style.color = "";
-//   }
-
-//   if (isRunning && PENDING_LEFT_BET) {
-//     LEFT_BET_BUTTON.textContent = "WAITING";
-//     LEFT_BET_BUTTON.style.backgroundColor = "red";
-//     LEFT_BET_BUTTON.style.color = "white";
-//   } else {
-//     LEFT_BET_BUTTON.textContent = `${leftBetAmount.toFixed(2)} BET`;
-//     LEFT_BET_BUTTON.style.backgroundColor = "";
-//     LEFT_BET_BUTTON.style.color = "";
-//   }
-
-//   // if (isRunning && PENDING_RIGHT_BET) {
-//   //   RIGHT_BET_BUTTON.textContent = "WAITING";
-//   //   RIGHT_BET_BUTTON.style.backgroundColor = "red";
-//   //   RIGHT_BET_BUTTON.style.color = "white";
-//   // } else {
-//   //   RIGHT_BET_BUTTON.textContent = `${righTBetAmount.toFixed(2)} BET`;
-//   //   RIGHT_BET_BUTTON.style.backgroundColor = "";
-//   //   RIGHT_BET_BUTTON.style.color = "";
-//   // }
-// };
-
-// userBalance();
-// indexNumber();
-// startInterval();
-// getFullScreen();
-// airplane();
-// betBtn();
-// betValue();
-// betButton();
-// leftBetButton();
-// rightBetButton();

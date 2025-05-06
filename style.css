@@ -124,6 +124,7 @@ main .game-container {
   position: relative;
   width: 100%;
   height: 100vh;
+  overflow: hidden;
 }
 main .game-container .index{
   position: absolute;
@@ -225,13 +226,15 @@ main .bets-container .bet-container .bet .bet-value #l-one,
   border-radius: 22px;
 }
 main .game-container #storeage-container{
+  position: absolute;
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  width: 100%;
-  height: 30px;
-  margin-top: 20px;
-  margin-left: 20px;
+  width: 90%;
+  height: 50px;
+  top: 5px;
+  left: 20px;
+  overflow: hidden;
 }
 main .game-container .storeage{
   display: flex;
@@ -243,4 +246,40 @@ main .game-container .storeage{
   background-color: black;
   color: white;
   margin: 20px 5px 0px 0px;
+}
+
+.game-history{
+  width: 100%;
+}
+.game-history .head-history{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  color: white;
+  font-size: 16px;
+  margin-top: 20px;
+}
+.game-history .head-history .player-name{
+  margin-left: 30px;
+}
+.game-history .head-history .player-bet{
+  margin: 0px 230px 0px 100px;
+}
+
+.game-history .my-game{
+  margin-top: 20px;
+  width: 100%;
+  height: 30px;
+  border-radius: 8px;
+  background-color: rgb(52, 55, 52);
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  color: white;
+}
+.game-history .my-game .player{
+  margin-left: 20px;
+}
+.game-history .my-game .bet{
+  margin: 0px 225px 0px 96px;
 }
